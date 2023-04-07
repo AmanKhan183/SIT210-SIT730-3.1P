@@ -1,0 +1,26 @@
+int photoPin = A0;     // Analog input pin for photoresistor
+double light = 0;      // INTITIALISING LIGHT
+
+void setup() 
+{
+  Particle.connect(); 
+}
+
+void loop() 
+{
+  int photoValue = analogRead(photoPin); // Read raw analog value from photoresistor
+
+  // Convert analog value to percentage
+  light = ((double)photoValue / 4095) * 100; //To read as a percentage
+
+  // Print percentage value to serial monitor
+  Serial.print("Light percentage: ");
+  Serial.println(light);
+
+  // Publish light value to Particle webhook
+  Particle.publish("light_percentage", String(light), PRIVATE); // Publish light value to Particle webhook
+
+  // Wait for 1 second before taking another reading
+  delay(1000);
+}
+
